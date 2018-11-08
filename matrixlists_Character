@@ -1,0 +1,153 @@
+#include <stdio.h>
+int main()
+{
+ 	char type, v1, v2;
+    int i, r=0, c=0, nodes=0, ver, n_edges=0;
+    printf("================================================");
+ 	printf("\n| Generate Adjacency Matrix and Adjacency List |\n");
+ 	printf("================================================");
+ 	printf("\n\nEnter type of graph (u=undirected,d=directed): ");
+ 	fflush(stdin);
+ 	type=getc(stdin);
+
+ 	//To check valid or invalid type of graph
+ 	if(type=='U' || type=='u' || type=='D' || type=='d')
+    {
+        printf("\nEnter number of nodes : ");
+        scanf("%d", &nodes);
+        if(nodes<=0)
+        {
+            printf("\nERROR: Number of nodes must be greater than 0.\n\n\n");
+            main();
+        }
+
+        int vertex[nodes][nodes], row[nodes], col[nodes];
+
+        //To input vertex based on number of nodes
+        for(i=0;i<nodes;i++)
+        {
+            printf("Enter vertex %d: ", i+1);
+            fflush(stdin);
+            ver=getc(stdin);
+            row[i]=ver;
+            col[i]=ver;
+        }
+
+        //Define all as 0 (no connection)
+        for(r=0;r<nodes;r++)
+        {
+            for(c=0;c<nodes;c++)
+            {
+                vertex[r][c]=0;
+            }
+        }
+        printf("\n\n\n***Enter '-' in start vertex and end vertex to end input of vertex.");
+
+        //To loop the input process
+        while(v1!='-' && v2!='-')
+        {
+
+            printf("\n\nStart vertex: ");
+            fflush(stdin);
+            scanf (" %c", &v1);
+            printf("End vertex: ");
+            fflush(stdin);
+            scanf (" %c", &v2);
+
+            for(r=0;r<nodes;r++)
+            {
+                if(row[r]==v1)
+                {
+                    for(c=0;c<nodes;c++)
+                    {
+                        if(col[c]==v2)
+                        {
+                            if (type=='U' || type=='u')
+                            {
+                                vertex[r][c]=1;
+                                vertex[c][r]=1;
+                                printf("Undirected graph from %c to %c", v1, v2);
+                                printf("\nUndirected graph from %c to %c", v2, v1);
+                            }
+                            else
+                            {
+                                vertex[r][c]=1;
+                                printf("Directed graph from %c to %c", v1, v2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        printf("\n\n--------ADJACENCY MATRIX--------\n\n    ");
+        for(r=0;r<nodes;r++)
+        {
+            printf("%c ", col[r]);
+        }
+        printf("\n    ");
+        for(r=0;r<nodes;r++)
+        {
+            printf("%c ", 196);
+        }
+        printf("\n");
+
+        //To print adjacency matrix
+        for(r=0;r<nodes;r++)
+        {
+            printf("%c | ", row[r]);
+            for(c=0;c<nodes;c++)
+            {
+                printf("%d ", vertex[r][c]);
+            }
+            printf("\n");
+        }
+
+        printf("\n\n\n--------ADJACENCY LISTS--------\n");
+
+        //To print vertices
+        printf("\nVertices: ");
+        for(i=0;i<nodes;i++)
+        {
+            printf("%c, ", col[i]);
+        }
+
+        //To print pair of edges
+        printf("\nEdges: ");
+        for(r=0;r<nodes;r++)
+        {
+            for(c=0;c<nodes;c++)
+            {
+                if(vertex[r][c]==1)
+                {
+                    n_edges++;
+                    printf("%c%c, ", row[r],col[c]);
+                }
+            }
+        }
+        printf("\nTotal number of edges: %d", n_edges);
+
+        //To print adjacency lists
+        printf("\n\nHeads\tLists\n");
+        for(r=0;r<nodes;r++)
+        {
+            printf("  %c\t", row[r]);
+            for(c=0;c<nodes;c++)
+            {
+                if(vertex[r][c]==1)
+                {
+                    printf("%c ", col[c]);
+                }
+            }
+            printf("\n");
+        }
+        printf("\nPress any key to exit...\n");
+        getch();
+    }
+    else
+    {
+        printf("\nERROR: Invalid type of graph. Enter only 'u' or 'd'.\n\n\n");
+        main();
+    }
+    return 0;
+}
